@@ -1,0 +1,286 @@
+/**
+ * notification-item.css
+ * 
+ * Styles for individual notification items in the notification panel.
+ * These styles are designed to be consistent with modern CMS aesthetics
+ * and provide a clean, accessible, and responsive user experience.
+ */
+
+.notification-item {
+    position: relative;
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e7eb;
+    background: white;
+    transition: background-color 0.2s ease;
+    animation: slideIn 0.3s ease forwards;
+    opacity: 0;
+}
+
+.notification-item:hover {
+    background-color: #f9fafb;
+}
+
+.notification-item:last-child {
+    border-bottom: none;
+}
+
+/* Stagger animation for list items */
+.notification-item:nth-child(1) {
+    animation-delay: 0.05s;
+}
+
+.notification-item:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.notification-item:nth-child(3) {
+    animation-delay: 0.15s;
+}
+
+.notification-item:nth-child(4) {
+    animation-delay: 0.2s;
+}
+
+.notification-item:nth-child(5) {
+    animation-delay: 0.25s;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Dismissing animation */
+.notification-item.dismissing {
+    animation: slideOut 0.3s ease forwards;
+}
+
+@keyframes slideOut {
+    to {
+        opacity: 0;
+        transform: translateX(100%);
+    }
+}
+
+.notification-item-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.notification-item-title {
+    flex: 1;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #111827;
+    line-height: 1.4;
+    padding-right: 12px;
+}
+
+.notification-item-dismiss {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border: none;
+    background: transparent;
+    border-radius: 4px;
+    cursor: pointer;
+    color: #9ca3af;
+    transition: background-color 0.2s ease, color 0.2s ease;
+    margin-top: -2px;
+}
+
+.notification-item-dismiss:hover {
+    background-color: #e5e7eb;
+    color: #4b5563;
+}
+
+.notification-item-dismiss:focus-visible {
+    outline: 2px solid #0066cc;
+    outline-offset: 2px;
+}
+
+.notification-item-dismiss:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.notification-item-message {
+    margin: 0 0 12px 0;
+    font-size: 14px;
+    color: #4b5563;
+    line-height: 1.6;
+    word-wrap: break-word;
+}
+
+.notification-item-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.notification-item-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.notification-role-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.notification-role-badge.role-admin {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.notification-role-badge.role-editor {
+    background-color: #dbeafe;
+    color: #1e40af;
+}
+
+.notification-role-badge.role-user {
+    background-color: #e0e7ff;
+    color: #3730a3;
+}
+
+.notification-role-badge.role-all {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.notification-timestamp {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.notification-timestamp svg {
+    width: 12px;
+    height: 12px;
+}
+
+/* New notification indicator */
+.notification-item.is-new {
+    border-left: 3px solid #0066cc;
+    background-color: #f0f9ff;
+}
+
+.notification-item.is-new:hover {
+    background-color: #e0f2fe;
+}
+
+/* Specific notification styling */
+.notification-item.is-specific {
+    border-left: 3px solid #8b5cf6;
+}
+
+.notification-specific-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    background-color: #f5f3ff;
+    color: #6d28d9;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.notification-specific-badge svg {
+    width: 12px;
+    height: 12px;
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+
+    .notification-item,
+    .notification-item.dismissing {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .notification-item {
+        border: 1px solid currentColor;
+    }
+
+    .notification-role-badge {
+        border: 1px solid currentColor;
+    }
+}
+
+/* Dark mode support (optional, for CMS that support dark mode) */
+@media (prefers-color-scheme: dark) {
+    .notification-item {
+        background: #1f2937;
+        border-bottom-color: #374151;
+    }
+
+    .notification-item:hover {
+        background-color: #111827;
+    }
+
+    .notification-item-title {
+        color: #f9fafb;
+    }
+
+    .notification-item-message {
+        color: #d1d5db;
+    }
+
+    .notification-item-meta {
+        color: #9ca3af;
+    }
+
+    .notification-item-dismiss {
+        color: #9ca3af;
+    }
+
+    .notification-item-dismiss:hover {
+        background-color: #374151;
+        color: #e5e7eb;
+    }
+
+    .notification-item.is-new {
+        background-color: #1e3a5f;
+    }
+
+    .notification-item.is-new:hover {
+        background-color: #1e40af;
+    }
+}
+
+/* Print styles */
+@media print {
+    .notification-item-dismiss {
+        display: none;
+    }
+}

@@ -1,0 +1,309 @@
+---
+/**
+ * Example Page - Main Layout
+ * 
+ * This demonstrates how to integrate the notification panel into your Astro layout.
+ * Replace the mock user with your actual authentication system.
+ */
+
+import NotificationPanel from '../components/NotificationPanel.astro';
+
+import '../styles/notification-item.css';
+
+// IMPORTANT: Replace this with your actual user authentication
+// Examples:
+// - const user = Astro.locals.user;
+// - const user = await getSession(Astro.cookies);
+// - const user = await getUserFromToken(Astro.request.headers.get('Authorization'));
+
+const mockUsers = {
+  'admin': { id: 'user-1', role: 'admin' as const, name: 'Admin User' },
+  'editor': { id: 'user-2', role: 'editor' as const, name: 'Editor User' },
+  'user': { id: 'user-3', role: 'user' as const, name: 'Regular User' },
+};
+
+// For demo: Switch users via query param
+const userType = (Astro.url.searchParams.get('as') || 'admin') as keyof typeof mockUsers;
+const currentUser = mockUsers[userType];
+
+const { title = 'CMS Dashboard' } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        line-height: 1.6;
+        color: #333;
+      }
+
+      header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      nav {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 1rem 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: 700;
+        text-decoration: none;
+        color: white;
+      }
+
+      .nav-right {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem 1rem;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+        font-size: 0.9rem;
+      }
+
+      .user-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 600;
+      }
+
+      .user-role {
+        text-transform: capitalize;
+        opacity: 0.8;
+        font-size: 0.8rem;
+      }
+
+      main {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      .demo-switcher {
+        background: #f8f9fa;
+        border: 1px solid #dee2e6;
+        border-radius: 8px;
+        padding: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .demo-switcher h3 {
+        margin-bottom: 1rem;
+        color: #495057;
+      }
+
+      .demo-buttons {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+
+      .demo-button {
+        padding: 0.5rem 1rem;
+        border: 2px solid #dee2e6;
+        background: white;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.2s;
+        text-decoration: none;
+        color: #495057;
+      }
+
+      .demo-button:hover {
+        border-color: #667eea;
+        color: #667eea;
+      }
+
+      .demo-button.active {
+        background: #667eea;
+        border-color: #667eea;
+        color: white;
+      }
+
+      .content-card {
+        background: white;
+        border-radius: 8px;
+        padding: 2rem;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .content-card h1 {
+        color: #212529;
+        margin-bottom: 1rem;
+      }
+
+      .content-card p {
+        color: #6c757d;
+        margin-bottom: 1rem;
+      }
+
+      .feature-list {
+        list-style: none;
+        margin-top: 1.5rem;
+      }
+
+      .feature-list li {
+        padding: 0.5rem 0;
+        padding-left: 1.5rem;
+        position: relative;
+      }
+
+      .feature-list li:before {
+        content: '✓';
+        position: absolute;
+        left: 0;
+        color: #28a745;
+        font-weight: bold;
+      }
+
+      footer {
+        max-width: 1200px;
+        margin: 2rem auto;
+        padding: 2rem;
+        text-align: center;
+        color: #6c757d;
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 768px) {
+        nav {
+          padding: 1rem;
+        }
+
+        .user-info span {
+          display: none;
+        }
+
+        main {
+          padding: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <a href="/" class="logo">🔔 CMS Dashboard</a>
+        
+        <div class="nav-right">
+          <div class="user-info">
+            <div class="user-avatar">
+              {currentUser.name.charAt(0)}
+            </div>
+            <div>
+              <div>{currentUser.name}</div>
+              <div class="user-role">{currentUser.role}</div>
+            </div>
+          </div>
+          
+          <!-- Notification Panel Component -->
+          <NotificationPanel 
+            userId={currentUser.id} 
+            userRole={currentUser.role}
+            position="right"
+          />
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <!-- Demo User Switcher -->
+      <div class="demo-switcher">
+        <h3>🎭 Demo: Switch User Roles</h3>
+        <p style="margin-bottom: 1rem; color: #6c757d; font-size: 0.9rem;">
+          Different roles see different notifications. Try switching between users:
+        </p>
+        <div class="demo-buttons">
+          <a href="/?as=admin" class:list={["demo-button", { active: userType === 'admin' }]}>
+            Admin (3 notifications)
+          </a>
+          <a href="/?as=editor" class:list={["demo-button", { active: userType === 'editor' }]}>
+            Editor (2 notifications)
+          </a>
+          <a href="/?as=user" class:list={["demo-button", { active: userType === 'user' }]}>
+            User (1 notification)
+          </a>
+        </div>
+      </div>
+
+      <div class="content-card">
+        <slot>
+          <h1>Welcome to the Notification System Demo</h1>
+          <p>
+            This is a fully functional example of the Astro notification panel system.
+            Click the bell icon in the top right to see your notifications!
+          </p>
+
+          <h2 style="margin-top: 2rem; margin-bottom: 1rem;">Features</h2>
+          <ul class="feature-list">
+            <li>Role-based notification filtering (admin, editor, user)</li>
+            <li>Individual notification dismissal</li>
+            <li>Real-time notification count badge</li>
+            <li>Smooth animations and transitions</li>
+            <li>Responsive design for all devices</li>
+            <li>Keyboard navigation support</li>
+            <li>Screen reader accessible</li>
+            <li>User-specific and broadcast notifications</li>
+          </ul>
+
+          <h2 style="margin-top: 2rem; margin-bottom: 1rem;">Try It Out</h2>
+          <p>
+            1. Click the bell icon to open the notification panel<br>
+            2. Read through the notifications<br>
+            3. Dismiss a notification by clicking the ✕ button<br>
+            4. Switch user roles above to see different notifications<br>
+            5. Notice how the badge count updates automatically
+          </p>
+
+          <div style="margin-top: 2rem; padding: 1rem; background: #fff3cd; border-left: 4px solid #ffc107; border-radius: 4px;">
+            <strong>💡 Integration Tip:</strong> Replace the mock user authentication in 
+            <code style="background: #f8f9fa; padding: 0.2rem 0.4rem; border-radius: 4px;">src/layouts/ExampleLayout.astro</code> 
+            with your actual user management system.
+          </div>
+        </slot>
+      </div>
+    </main>
+
+    <footer>
+      <p>
+        Built with ❤️ using Astro, AstroDB, and vanilla CSS/JS<br>
+        <a href="https://github.com" style="color: #667eea; text-decoration: none;">View on GitHub</a>
+      </p>
+    </footer>
+
+    <!-- Import notification panel client script -->
+    <script src="/src/scripts/NotificationPanel.client.ts"></script>
+  </body>
+</html>
