@@ -1,5 +1,7 @@
 # Astro Notification System
 
+<img width="2331" height="1203" alt="image" src="https://github.com/user-attachments/assets/0a621a65-c596-4188-8a19-d620010c345a" />
+
 A lightweight, customizable notification panel system for Astro-based Content Management Systems (CMS). This system provides role-based notifications with individual dismissal functionality, built using Astro, AstroDB, and vanilla CSS/JavaScript.
 
 ## Features
